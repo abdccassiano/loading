@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import React , {useEffect, useState} from 'react';
 import './App.css';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 
 function App() {
+
+  const [post, setPost] = useState(null);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts/1")
+    .then(response=>response.json())
+    .then(response=>{
+      const {body} = response
+      console.log(body)
+      setPost(body)
+    })
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 align="center">React-App</h1>
+      {post ? post : <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open>
+        <CircularProgress color="inherit" />
+      </Backdrop>}
     </div>
   );
 }
